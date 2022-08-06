@@ -31,7 +31,6 @@ export class UserService {
     }
     const newUser = new UserEntity();
     Object.assign(newUser, createUserDto);
-    console.log('newUser', newUser);
     return await this.userRepository.save(newUser);
   }
   async findById(id: number): Promise<UserEntity> {
