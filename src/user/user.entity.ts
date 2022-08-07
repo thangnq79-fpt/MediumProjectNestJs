@@ -6,6 +6,8 @@ import {
   Column,
   BeforeInsert,
   OneToMany,
+  ManyToMany,
+  JoinTable,
 } from 'typeorm';
 
 @Entity({ name: 'users' })
@@ -28,4 +30,7 @@ export class UserEntity {
   }
   @OneToMany(() => ArticleEntity, (article) => article.author)
   articles: ArticleEntity[];
+  @ManyToMany(()=> ArticleEntity)
+  @JoinTable()
+  favorites: ArticleEntity[];
 }
