@@ -29,7 +29,6 @@ export class ProfileService {
       followerId: currentUserId,
       followingId: user.id,
     });
-    console.log('follow', follow, currentUserId, user.id);
 
     return { ...user, following: Boolean(follow) };
   }
@@ -51,24 +50,15 @@ export class ProfileService {
         HttpStatus.BAD_REQUEST,
       );
     }
-    // const follow = await this.followRepository.findOne({
-    //     followerId: currentUserId,
-    //     followingId: user.id,
-    //   });
-    //   console.log('follow', follow, currentUserId, user.id);
-    const follow = await getRepository(FollowEntity)
-      .createQueryBuilder('follows')
-      .where(
-        'follows.followerId = :followerId AND follows.followingId = :followingId',
-        { followerId: currentUserId, followingId: user.id },
-      )
-      .getOne();
-      console.log(follow);
+    const follow = await this.followRepository.findOne({
+        followerId: currentUserId,
+        followingId: user.id,
+      });
       
     if (!follow) {
       const followToCreate = new FollowEntity();
-      followToCreate.followerId = user.id;
-      followToCreate.followingId = currentUserId;
+      followToCreate.followerId = currentUserId;
+      followToCreate.followingId = user.id;
       await this.followRepository.save(followToCreate);
     }
     return { ...user, following: true };
