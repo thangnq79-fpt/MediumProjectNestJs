@@ -32,6 +32,14 @@ export class ArticleController {
     return await this.articleService.findAll(currentUserId, query);
   }
 
+  @Get('feed')
+  @UseGuards(AuthGuard)
+  async getFeed(
+    @User('id') currentUserId: number,
+    @Query() query: any,
+  ): Promise<ArticlesResponseInterface> {
+    return await this.articleService.getFeed(currentUserId, query);
+  }
   @Post()
   @UseGuards(AuthGuard)
   @UsePipes(new ValidationPipe())
@@ -87,7 +95,7 @@ export class ArticleController {
       slug,
       currentUserId,
     );
-    
+
     return this.articleService.buildArticleResponse(article);
   }
   @Delete(':slug/favorite')
@@ -100,7 +108,7 @@ export class ArticleController {
       slug,
       currentUserId,
     );
-    
+
     return this.articleService.buildArticleResponse(article);
   }
 }
